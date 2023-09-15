@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+
+  h1= title
+
+  div(class="container text-center")
+    div(class="row")
+      each item in items_list 
+        div(class="col-sm d-flex flex-column")
+          img(src=item.image, class='img-thumbnail', alt='')
+          a(href=item.url) #{item.name}
+          p=item.price
+
+      else
+        li No item found.

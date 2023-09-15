@@ -49,5 +49,10 @@ exports.item_detail = asyncHandler(async (req, res, next) => {
 
 // GET request for list of all items
 exports.items_list = asyncHandler(async (req, res, next) => {
-  res.send('Not implemented: GET items list.')
+  const allItems = await Item.find({}, "name category image price")
+    .sort({ name: 1 })
+    .populate("category")
+    .exec();
+  
+  res.render("items_list", { title: 'All items', items_list: allItems })
 });
