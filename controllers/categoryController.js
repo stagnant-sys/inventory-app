@@ -16,7 +16,17 @@ exports.category_list = asyncHandler(async (req, res, next) => {
 
 // GET request for category detail
 exports.category_detail = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: GET category ${req.params.id} detail.`)
+  const [category, itemsInCategory] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+  console.log(itemsInCategory);
+  if (category === null) {
+    const err = new Error('Category not found');
+    err.status = 404;
+    return next(err);
+  }
+  res.render('category_detail', { title: 'Category', category, itemsInCategory });
 });
 
 
