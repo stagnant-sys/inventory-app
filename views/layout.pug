@@ -9,13 +9,12 @@ html(lang='en')
   body
     nav(class="navbar navbar-expand-lg bg-primary")
       div(class="container-fluid")
-        div(class="navbar-brand text-white") FuzzyStore
+        div(class="navbar-brand text-white")
+          a(href='/', class='navbar-brand text-white') FuzzyStore
         button(class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
           span(class="navbar-toggler-icon")
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
           ul(class="navbar-nav me-auto mb-2 mb-lg-0")
-            li(class="nav-item")
-              a(class="nav-link text-white" aria-current="page" href="/") Home
             li(class="nav-item dropdown")
               a(class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Browse
               ul(class="dropdown-menu")
@@ -23,6 +22,13 @@ html(lang='en')
                   a(class="dropdown-item" href="/store/items") Items
                 li
                   a(class="dropdown-item" href="/store/categories") Categories
+            li(class="nav-item dropdown")
+              a(class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Add
+              ul(class="dropdown-menu")
+                li
+                  a(class="dropdown-item" href="/store/item/create") Add an item
+                li
+                  a(class="dropdown-item" href="/store/category/create") Add a category
 
     block content
 
