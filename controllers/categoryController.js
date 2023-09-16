@@ -5,6 +5,18 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 
+// GET request for list of all categories
+exports.category_list = asyncHandler(async (req, res, next) => {
+  res.send('Not implemented: GET category list.')
+});
+
+
+// GET request for category detail
+exports.category_detail = asyncHandler(async (req, res, next) => {
+  res.send(`Not implemented: GET category ${req.params.id} detail.`)
+});
+
+
 // GET request for creating category
 exports.category_create_get = asyncHandler(async (req, res, next) => {
   res.send('Not implemented: GET category create.')
@@ -38,16 +50,4 @@ exports.category_update_get = asyncHandler(async (req, res, next) => {
 // POST request to update category
 exports.category_update_post = asyncHandler(async (req, res, next) => {
   res.send(`Not implemented: POST category ${req.params.id} update.`)
-});
-
-
-// GET request for category detail
-exports.category_detail = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: GET category ${req.params.id} detail.`)
-});
-
-
-// GET request for list of all categories
-exports.category_list = asyncHandler(async (req, res, next) => {
-  res.send('Not implemented: GET category list.')
 });

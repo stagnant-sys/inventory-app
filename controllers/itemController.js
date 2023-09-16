@@ -4,6 +4,23 @@ const Category = require('../models/category');
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
+// GET request for list of all items
+exports.items_list = asyncHandler(async (req, res, next) => {
+  const allItems = await Item.find({})
+    .sort({ name: 1 })
+    .populate("category")
+    .exec();
+  console.log(allItems);
+  res.render("items_list", { title: 'All items', items_list: allItems })
+});
+
+
+// GET request for item detail
+exports.item_detail = asyncHandler(async (req, res, next) => {
+  const item_detail = await Item.findById(req.params.id).populate("category").exec();
+  res.render("item_detail", { title: 'Item detail', item_detail: item_detail })
+});
+
 
 // GET request for creating item
 exports.item_create_get = asyncHandler(async (req, res, next) => {
@@ -38,21 +55,4 @@ exports.item_update_get = asyncHandler(async (req, res, next) => {
 // POST request to update item
 exports.item_update_post = asyncHandler(async (req, res, next) => {
   res.send(`Not implemented: POST update item ${req.params.id}`)
-});
-
-
-// GET request for item detail
-exports.item_detail = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: GET item ${req.params.id} detail`)
-});
-
-
-// GET request for list of all items
-exports.items_list = asyncHandler(async (req, res, next) => {
-  const allItems = await Item.find({}, "name category image price")
-    .sort({ name: 1 })
-    .populate("category")
-    .exec();
-  
-  res.render("items_list", { title: 'All items', items_list: allItems })
 });

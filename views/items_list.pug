@@ -9,8 +9,10 @@ block content
       each item in items_list 
         div(class="col-sm d-flex flex-column")
           img(src=item.image, class='img-thumbnail', alt='')
-          a(href=item.url) #{item.name}
-          p=item.price
+          a(href=item.url) #[strong #{item.name}]
+          p #{item.price} €
+          if (item.number_in_stock <= 0)
+            p(class='text-danger') Out of stock
 
       else
         li No item found.
