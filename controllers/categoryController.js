@@ -37,9 +37,41 @@ exports.category_create_get = asyncHandler(async (req, res, next) => {
 
 
 // POST request for creating category
-exports.category_create_post = asyncHandler(async (req, res, next) => {
-  res.send('Not implemented: POST category create.')
-});
+exports.category_create_post = [
+  body('name', 'Name must contain at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  body('description', 'Description must contain at least 5 characters')
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+    
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({ name: req.body.name, description: req.body.description })
+
+    if (!errors.isEmpty()) {
+      res.render('category_form', {
+        title: 'Create category',
+        category: category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const categoryExists = await Category.findOne({ name: req.body.name })
+        .collation({ locale: "en", strength: 2 })
+        .exec();
+      if (categoryExists) {
+        res.redirect(categoryExists.url);
+      } else {
+        await category.save();
+        res.redirect(category.url);
+      }
+    }
+  })
+];
 
 
 // GET request to delete category
