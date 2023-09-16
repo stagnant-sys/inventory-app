@@ -4,11 +4,11 @@ block content
   h1= title
   form(method='POST', action='')
     div.form-group
-      label(for='name') Category name:
+      label(for='name') Name:
       input#name.form-control(type='text' name='name' value=(category===undefined ? '' : category.name))
     
     div.form-group
-      label(for='description') Category description:
+      label(for='description') Description:
       input#description.form-control(type='text', name='description', placeholder='Describe the category in a few words', value=(category===undefined ? '' : category.description))
     
     button.btn.btn-primary(type='submit') Submit

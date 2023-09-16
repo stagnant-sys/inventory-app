@@ -1,0 +1,38 @@
+extends layout 
+
+block content 
+  h1= title
+  form(method="POST", action="")
+    div.form-group
+      label(for="name") Name:
+      input#name.form-control(type="text" name="name" value=(item===undefined ? "" : item.name))
+    
+    div.form-group
+      label(for="description") Description:
+      input#description.form-control(type="text", name="description", placeholder="Describe the item\'s characteristics", value=(item===undefined ? "" : item.description))
+    
+    div.form-group 
+      label(for="category") Category:
+      select#category.form-control(type="select", placeholder="Choose category", name="category")
+        - allCategories.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        each category in allCategories
+          option(value=category._id selected=(selected_category==category._id.toString() ? 'selected' : false)) #{category.name}
+            
+    div.form-group
+      label(for="price") Price (€):
+      input#price.form-control(type="number" name="price" min="0" value=(item===undefined ? "" : item.price))
+
+    div.form-group
+      label(for="number_in_stock") Number in stock: 
+      input#number_in_stock.form-control(type="number" name="number_in_stock" min="0" value=(item===undefined ? "" : item.number_in_stock))
+    
+    div.form-group
+      label(for="image") Image URL: 
+      input#image.form-control(type="text" name="image" value=(item===undefined ? "" : item.image))
+
+    button.btn.btn-primary(type="submit") Submit
+
+  if errors
+    ul
+      each error in errors
+        li!= error.msg

@@ -20,7 +20,6 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
     Category.findById(req.params.id).exec(),
     Item.find({ category: req.params.id }).exec(),
   ]);
-  console.log(itemsInCategory);
   if (category === null) {
     const err = new Error('Category not found');
     err.status = 404;
@@ -42,7 +41,6 @@ exports.category_create_post = [
     .trim()
     .isLength({ min: 3 })
     .escape(),
-
   body('description', 'Description must contain at least 5 characters')
     .trim()
     .isLength({ min: 5 })
