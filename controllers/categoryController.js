@@ -7,7 +7,10 @@ const asyncHandler = require("express-async-handler");
 
 // GET request for list of all categories
 exports.category_list = asyncHandler(async (req, res, next) => {
-  res.send('Not implemented: GET category list.')
+  const allCategories = await Category.find({})
+    .sort({ name: 1 })
+    .exec();
+  res.render('categories_list', { title: 'All Categories', allCategories: allCategories });
 });
 
 
