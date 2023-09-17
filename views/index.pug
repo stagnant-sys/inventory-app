@@ -1,4 +1,7 @@
 extends layout
 
 block content
-  p Welcome to #{title}
+  div.d-flex.flex-column(style='align-items: center; gap: 32px;')
+    h1(style='text-align:center;') Welcome to #{title}
+    button.btn.btn-primary.btn-lg(style='max-width: 400px;') 
+      a.text-white.link-underline.link-underline-opacity-0(href='/store/items') Browse our fluffy collection
