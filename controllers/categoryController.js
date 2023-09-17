@@ -3,6 +3,7 @@ const Category = require('../models/category');
 
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+const unescape = require('../middleware/unescape');
 
 
 // GET request for list of all categories
@@ -40,11 +41,13 @@ exports.category_create_post = [
   body('name', 'Name must contain at least 3 characters')
     .trim()
     .isLength({ min: 3 })
-    .escape(),
+    .escape()
+    .unescape("&#39;", "'"),
   body('description', 'Description must contain at least 5 characters')
     .trim()
     .isLength({ min: 5 })
-    .escape(),
+    .escape()
+    .unescape("&#39;", "'"),
     
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -74,23 +77,89 @@ exports.category_create_post = [
 
 // GET request to delete category
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: GET category ${req.params.id} delete.`)
+  const [category, itemsInCategory] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+  if (category === null) {
+    res.redirect('/store/categories');
+  } else {
+    res.render('category_delete', {
+      title: 'Delete Category',
+      category,
+      itemsInCategory,
+    });
+  }
 });
 
 
 // POST request to delete category
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: POST category ${req.params.id} delete.`)
+  const [category, itemsInCategory] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Item.find({ category: req.params.id }).exec(),
+  ]);
+  if (itemsInCategory.length) {
+    res.render('category_delete', {
+      title: 'Delete Category',
+      category,
+      itemsInCategory,
+    });
+    return;
+  } else {
+    await Category.findByIdAndRemove(req.body.categoryid);
+    res.redirect('/store/categories');
+  }
 });
 
 
 // GET request to update category
 exports.category_update_get = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: GET category ${req.params.id} update.`)
+  const category = await Category.findById(req.params.id).exec();
+  if (category === null) {
+    res.redirect('/store/categories');
+    return;
+  } else {
+    res.render('category_form', {
+      title: 'Update category',
+      category,
+    })
+  }
 });
 
 
 // POST request to update category
-exports.category_update_post = asyncHandler(async (req, res, next) => {
-  res.send(`Not implemented: POST category ${req.params.id} update.`)
-});
+exports.category_update_post = [
+  body('name', 'Name must contain at least 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .unescape("&#39;", "'"),
+  body('description', 'Description must contain at least 5 characters')
+    .trim()
+    .isLength({ min: 5 })
+    .escape()
+    .unescape("&#39;", "'"),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      const category = await Category.findById(req.params.id).exec();
+      res.render('category_form', {
+        title: 'Update category',
+        category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
+      res.redirect(updatedCategory.url);
+    }
+  })
+];

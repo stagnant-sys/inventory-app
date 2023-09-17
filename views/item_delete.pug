@@ -1,0 +1,16 @@
+extends layout
+
+block content 
+  h1 #{title}: #{item.name}
+
+  h2 Item details:
+  ul.list-group
+    li.list-group-item Name: #{item.name}
+    li.list-group-item Description: #{item.description}
+    li.list-group-item Category: #{item.category.name}
+
+  p #[strong Are you sure you want to delete this item? (This action cannot be undone)]
+  form(method='POST', action='')
+    div.form-group
+      input#itemid.form-control(type='hidden' name='itemid' required='true' value=item._id)
+    button.btn.btn-danger(type='submit') Delete
