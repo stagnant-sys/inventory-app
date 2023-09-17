@@ -6,30 +6,31 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  body(style='background-color: #e8f7ff')
     nav(class="navbar navbar-expand-lg bg-primary")
       div(class="container-fluid")
         div(class="navbar-brand text-white")
-          a(href='/', class='navbar-brand text-white') FuzzyStore
+          a(href='/', class='navbar-brand text-white fs-2') FuzzyStore
         button(class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
           span(class="navbar-toggler-icon")
         div(class="collapse navbar-collapse" id="navbarSupportedContent")
           ul(class="navbar-nav me-auto mb-2 mb-lg-0")
             li(class="nav-item dropdown")
-              a(class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Browse
+              a(class="nav-link dropdown-toggle text-white fs-5" style="margin:0 12px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Browse
               ul(class="dropdown-menu")
                 li
                   a(class="dropdown-item" href="/store/items") Items
                 li
                   a(class="dropdown-item" href="/store/categories") Categories
             li(class="nav-item dropdown")
-              a(class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Add
+              a(class="nav-link dropdown-toggle text-white fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Add
               ul(class="dropdown-menu")
                 li
                   a(class="dropdown-item" href="/store/item/create") Add an item
                 li
                   a(class="dropdown-item" href="/store/category/create") Add a category
 
-    block content
+    main(style='padding: 24px;')
+      block content
 
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous")

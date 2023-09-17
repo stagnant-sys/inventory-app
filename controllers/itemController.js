@@ -3,6 +3,7 @@ const Category = require('../models/category');
 
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+const multer  = require('multer');
 
 // GET request for list of all items
 exports.items_list = asyncHandler(async (req, res, next) => {

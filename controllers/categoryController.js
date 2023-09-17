@@ -5,7 +5,6 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const unescape = require('../middleware/unescape');
 
-
 // GET request for list of all categories
 exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find({})
@@ -50,6 +49,7 @@ exports.category_create_post = [
     .unescape("&#39;", "'"),
     
   asyncHandler(async (req, res, next) => {
+    console.log(req.file);
     const errors = validationResult(req);
     const category = new Category({ name: req.body.name, description: req.body.description })
 
