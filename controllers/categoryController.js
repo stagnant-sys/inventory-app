@@ -10,7 +10,6 @@ exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find({})
     .sort({ name: 1 })
     .exec();
-  console.log(process.env.EDIT_PASSWORD);
   res.render('categories_list', { title: 'All Categories', allCategories: allCategories });
 });
 
@@ -48,6 +47,9 @@ exports.category_create_post = [
     .isLength({ min: 5 })
     .escape()
     .unescape("&#39;", "'"),
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
     
   asyncHandler(async (req, res, next) => {
     console.log(req.file);
