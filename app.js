@@ -16,7 +16,7 @@ const app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const mongoDB = "mongodb+srv://admin:ZFFwzMeEGMw0GuZL@cluster0.ant3sek.mongodb.net/inventory-app?retryWrites=true&w=majority";
-const password = process.env.EDIT_PASSWORD;
+const password = process.env.NODE_ENV;
 console.log(password);
 
 
