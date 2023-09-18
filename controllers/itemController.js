@@ -3,7 +3,6 @@ const Category = require('../models/category');
 
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
-const multer  = require('multer');
 
 // GET request for list of all items
 exports.items_list = asyncHandler(async (req, res, next) => {
@@ -56,6 +55,9 @@ exports.item_create_post = [
   body("image")
     .optional({ values: "falsy "})
     .trim(),
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
     
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -100,7 +102,29 @@ exports.item_delete_get = asyncHandler(async (req, res, next) => {
 
 
 // POST request to delete item
-exports.item_delete_post = asyncHandler(async (req, res, next) => {
+exports.item_delete_post = [
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const item = await Item.findById(req.params.id).populate('category').exec();
+    if (!errors.isEmpty()) {
+      res.render('item_delete', {
+        title: 'Delete item',
+        item,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Item.findByIdAndRemove(req.params.id);
+      res.redirect('/store/items');
+    }
+  }),
+]
+
+asyncHandler(async (req, res, next) => {
   await Item.findByIdAndRemove(req.params.id);
   res.redirect('/store/items');
 });
@@ -153,6 +177,9 @@ exports.item_update_post = [
   body("image")
     .optional({ values: "falsy "})
     .trim(),
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
@@ -167,10 +194,15 @@ exports.item_update_post = [
     });
 
     if (!errors.isEmpty()) {
-      const item = await Item.findById(req.params.id).exec();
+      const [item, allCategories] = await Promise.all([
+        Item.findById(req.params.id).populate('category').exec(),
+        Category.find({}).exec(),
+      ]);
       res.render('item_form', {
         title: 'Update item',
         item,
+        allCategories,
+        selected_category: item.category._id,
         errors: errors.array(),
       });
       return;

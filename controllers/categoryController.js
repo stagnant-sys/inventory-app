@@ -52,7 +52,6 @@ exports.category_create_post = [
     .equals(process.env.EDIT_PASSWORD),
     
   asyncHandler(async (req, res, next) => {
-    console.log(req.file);
     const errors = validationResult(req);
     const category = new Category({ name: req.body.name, description: req.body.description })
 
@@ -97,23 +96,35 @@ exports.category_delete_get = asyncHandler(async (req, res, next) => {
 
 
 // POST request to delete category
-exports.category_delete_post = asyncHandler(async (req, res, next) => {
-  const [category, itemsInCategory] = await Promise.all([
-    Category.findById(req.params.id).exec(),
-    Item.find({ category: req.params.id }).exec(),
-  ]);
-  if (itemsInCategory.length) {
-    res.render('category_delete', {
-      title: 'Delete Category',
-      category,
-      itemsInCategory,
-    });
-    return;
-  } else {
-    await Category.findByIdAndRemove(req.body.categoryid);
-    res.redirect('/store/categories');
-  }
-});
+exports.category_delete_post = [
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
+  
+  asyncHandler(async (req, res, next) => {
+    const [category, itemsInCategory] = await Promise.all([
+      Category.findById(req.params.id).exec(),
+      Item.find({ category: req.params.id }).exec(),
+    ]);
+    
+    const errors = validationResult(req);
+
+    if (itemsInCategory.length || !errors.isEmpty()) {
+      res.render('category_delete', {
+        title: 'Delete Category',
+        category,
+        itemsInCategory,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      await Category.findByIdAndRemove(req.body.categoryid);
+      res.redirect('/store/categories');
+    }
+  })
+]
+
+
 
 
 // GET request to update category
@@ -143,6 +154,9 @@ exports.category_update_post = [
     .isLength({ min: 5 })
     .escape()
     .unescape("&#39;", "'"),
+  body('password', "Incorrect password. Have you tried 'admin'?")
+    .escape()
+    .equals(process.env.EDIT_PASSWORD),
 
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);

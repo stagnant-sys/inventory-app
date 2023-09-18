@@ -30,9 +30,14 @@ block content
       label(for="image") Image URL: 
       input#image.form-control(type="text" name="image" value=(item===undefined ? "" : item.image))
 
+    div.form-group 
+      label(for='password') Password: 
+      input#password.form-control(type='password', name='password', placeholder='Enter admin password for editing')
+
     button.btn.btn-primary(type="submit" style='margin-top: 16px;') Submit
 
   if errors
+    hr
     ul
       each error in errors
         li!= error.msg
