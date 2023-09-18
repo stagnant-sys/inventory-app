@@ -1,3 +1,5 @@
+require('dotenv').config();
+console.log(process.env.EDIT_PASSWORD);
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -14,6 +16,10 @@ const app = express();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const mongoDB = "mongodb+srv://admin:ZFFwzMeEGMw0GuZL@cluster0.ant3sek.mongodb.net/inventory-app?retryWrites=true&w=majority";
+const password = process.env.EDIT_PASSWORD;
+console.log(password);
+
+
 
 main().catch((err) => console.log(err));
 async function main() {
