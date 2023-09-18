@@ -22,8 +22,9 @@ block content
           div(class='text-danger') Out of stock
 
   hr
-  button.btn.btn-warning 
-    a.text-white.link-underline.link-underline-opacity-0(href=item_detail.url+'/update') Update item 
-  button.btn.btn-danger
-    a.text-white.link-underline.link-underline-opacity-0(href=item_detail.url+'/delete') Delete item
+  div.d-flex.flex-column(style='width:fit-content; gap: 16px;')
+    button.btn.btn-warning
+      a.text-white.link-underline.link-underline-opacity-0(href=item_detail.url+'/update') Update item 
+    button.btn.btn-danger
+      a.text-white.link-underline.link-underline-opacity-0(href=item_detail.url+'/delete') Delete item
   

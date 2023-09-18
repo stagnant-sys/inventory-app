@@ -1,13 +1,16 @@
 extends layout 
 
 block content 
-  h1 #{title}: #{category.name} 
-  div
-    button.btn.btn-warning 
-      a.text-white.link-underline.link-underline-opacity-0(href=category.url+'/update') Update category 
-    button.btn.btn-danger
-      a.text-white.link-underline.link-underline-opacity-0(href=category.url+'/delete') Delete category
+  div.d-flex(style='align-items: center; justify-content:space-between;')
+    h1 #{title}: #{category.name} 
+    div.d-flex(style='gap:16px;')
+      button.btn.btn-warning 
+        a.text-white.link-underline.link-underline-opacity-0(href=category.url+'/update') Update category 
+      button.btn.btn-danger
+        a.text-white.link-underline.link-underline-opacity-0(href=category.url+'/delete') Delete category
   
+  hr
+
   div(class="container text-center")
     div(class="row")
       each item in itemsInCategory
