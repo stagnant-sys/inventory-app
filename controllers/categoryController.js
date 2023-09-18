@@ -10,6 +10,7 @@ exports.category_list = asyncHandler(async (req, res, next) => {
   const allCategories = await Category.find({})
     .sort({ name: 1 })
     .exec();
+  console.log(process.env.EDIT_PASSWORD);
   res.render('categories_list', { title: 'All Categories', allCategories: allCategories });
 });
 
